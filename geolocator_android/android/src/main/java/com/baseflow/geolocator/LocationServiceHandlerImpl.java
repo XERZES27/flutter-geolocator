@@ -55,7 +55,12 @@ public class LocationServiceHandlerImpl implements EventChannel.StreamHandler {
     IntentFilter filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
     filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
     receiver = new LocationServiceStatusReceiver(events);
-    ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_EXPORTED);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+    }else{
+      ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_EXPORTED);
+    }
+    
   }
 
   @Override
